@@ -8,4 +8,4 @@ originally created by [Gabriele Cirulli](https://github.com/gabrielecirulli).
 which was indirectly inspired by [Threes](https://asherv.com/threes/).
 
 ## License
-2048 is licensed under the [MIT license.]([https://github.com/NoxleyDev/2048/blob/master/LICENSE.txt])
+2048 is licensed under the [MIT license.](https://github.com/NoxleyDev/2048/blob/master/LICENSE.txt)
