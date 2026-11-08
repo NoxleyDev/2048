@@ -26,14 +26,48 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     if (metadata.terminated) {
       if (metadata.over) {
-        self.message(false); // You lose
+        self.message(false);
       } else if (metadata.won) {
-        self.message(true); // You win!
+        self.message(true);
       }
     }
-
   });
+}; // IMPORTANTE: aquí termina actuate
+
+
+// Satisfying merge pop sound
+HTMLActuator.prototype.playMergeSound = function () {
+  var AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+
+  try {
+    this.audioContext = this.audioContext || new AudioContext();
+    var context = this.audioContext;
+
+    if (context.state === "suspended") context.resume();
+
+    var oscillator = context.createOscillator();
+    var gain = context.createGain();
+    var now = context.currentTime;
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(620, now);
+    oscillator.frequency.exponentialRampToValueAtTime(260, now + 0.085);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.22, now + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+
+    oscillator.start(now);
+    oscillator.stop(now + 0.115);
+  } catch (error) {
+    // Audio is optional
+  }
 };
+
 
 // Continues the game (both restart and keep playing)
 HTMLActuator.prototype.continueGame = function () {
