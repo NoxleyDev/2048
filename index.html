@@ -100,5 +100,41 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
+  <script>
+(function () {
+  var music = document.getElementById("background-music");
+
+  // Background music volume (0.0 - 1.0)
+  music.volume = 0.25;
+
+  var starting = false;
+
+  function startMusic() {
+    if (!music.paused || starting) return;
+
+    starting = true;
+
+    var promise = music.play();
+
+    if (promise && promise.then) {
+      promise.then(function () {
+        document.removeEventListener("pointerdown", startMusic);
+        document.removeEventListener("keydown", startMusic);
+        document.removeEventListener("touchstart", startMusic);
+      }).catch(function () {
+        starting = false;
+      });
+    }
+  }
+
+  // Try autoplay
+  startMusic();
+
+  // If the browser blocks autoplay, start after user interaction
+  document.addEventListener("pointerdown", startMusic);
+  document.addEventListener("keydown", startMusic);
+  document.addEventListener("touchstart", startMusic);
+})();
+</script>
 </body>
 </html>
